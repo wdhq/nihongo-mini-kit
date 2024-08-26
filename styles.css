@@ -3,12 +3,19 @@
     --color-dark: #000000;
 }
 
-html, body {
+body, html {
     margin: 0;
     padding: 0;
     height: 100%;
     background-color: var(--color-dark);
     overflow: hidden;
+}
+
+.outer-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 @keyframes fadeIn {
@@ -17,11 +24,8 @@ html, body {
 }
 
 .container {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    text-align: center;
     opacity: 0;
     animation: fadeIn 1s forwards;
 }
@@ -96,4 +100,29 @@ canvas {
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     text-align: center;
+}
+
+@media (max-width: 600px) {
+
+    .outer-wrapper {
+        height: 95vh;
+        width: 100vw;
+    }
+
+    .container {
+        display: block;
+    }
+    
+    #canvas1, #canvas2 {
+        width: 45vw;
+        height: 45vw;
+        display: inline-block;
+    }
+
+    #canvas3 {
+        width: 45vw;
+        height: 45vw;
+        display: block;
+        margin: auto;
+    }
 }
