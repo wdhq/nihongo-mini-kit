@@ -1,0 +1,99 @@
+:root {
+    --color-light: #D9D9D9;
+    --color-dark: #000000;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: var(--color-dark);
+    overflow: hidden;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+canvas {
+    width: 23vw;
+    height: 23vw;
+    margin: -1.5vw;
+}
+
+.buttons-container {
+    position: absolute;
+    top: 13%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1.25rem;
+}
+
+.button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.button-left {
+    border: 1px solid var(--color-light);
+    background: none;
+    color: var(--color-light);
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.button-left:hover {
+    transform: rotate(-10deg);
+}
+
+.button-left:active {
+    transform: rotate(-35deg);
+}
+
+.button-right {
+    border: 1px solid var(--color-light);
+    background: var(--color-light);
+    color: var(--color-dark);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+.button-right:hover {
+    transform: rotate(10deg);
+}
+
+.button-right:active {
+    transform: rotate(35deg);
+}
+
+.github-link {
+    position: absolute;
+    top: 87%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-light);
+    text-decoration: underline;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    text-align: center;
+}
