@@ -1,8 +1,29 @@
 document.fonts.ready.then(() => {
-    const colors = {
-        colorLight: 0xD9D9D9,
-        colorDark: 0x000000
+    const themes = {
+        default: {
+            light: 0xD9D9D9,
+            dark: 0x000000,
+            button: '#F6D0E3'
+        },
+        pastel: {
+            light: 0x464B9A,
+            dark: 0xF6D0E3,
+            button: '#DA624F'
+        },
+        peach: {
+            light: 0xEFEFEF,
+            dark: 0xDA624F,
+            button: '#2A5744'
+        },
+        forest: {
+            light: 0xFBECAF,
+            dark: 0x2A5744,
+            button: '#D9D9D9'
+        }
     };
+
+    let currentTheme = 'default';
+    let colors = themes[currentTheme];
 
     const modes = {
         hiragana: [
@@ -28,6 +49,7 @@ document.fonts.ready.then(() => {
     const scenes = [];
     const cameras = [];
     const renderers = [];
+    const meshes = []; // Array to hold references to the mesh objects
 
     // Initialize the canvas, scene, camera, and renderer
     function setupCanvas(canvasId, objPath, index) {
@@ -36,7 +58,7 @@ document.fonts.ready.then(() => {
         const scene = new THREE.Scene();
         const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -1, 3);
 
-        scene.background = new THREE.Color(colors.colorDark);
+        scene.background = new THREE.Color(colors.dark);
         camera.position.set(1, 0.7, 1);
         camera.lookAt(0, 0, 0);
 
@@ -73,7 +95,7 @@ document.fonts.ready.then(() => {
                     const edgeLength = edgeVector.length();
 
                     const cylinderGeometry = new THREE.CylinderGeometry(edgeThickness, edgeThickness, edgeLength, 8);
-                    const cylinderMaterial = new THREE.MeshBasicMaterial({ color: colors.colorLight });
+                    const cylinderMaterial = new THREE.MeshBasicMaterial({ color: colors.light });
                     const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
 
                     cylinder.position.copy(start).add(end).divideScalar(2);
@@ -92,11 +114,17 @@ document.fonts.ready.then(() => {
         objLoader.load(objPath, (object) => {
             object.traverse((child) => {
                 if (child.isMesh) {
-                    child.material = new THREE.MeshBasicMaterial({
-                        color: colors.colorDark,
+                    // Set the cube color to dark
+                    const material = new THREE.MeshBasicMaterial({
+                        color: colors.dark,
                         side: THREE.DoubleSide
                     });
+                    child.material = material;
 
+                    // Store a reference to the mesh for later updates
+                    meshes.push(child);
+
+                    // Create and add thick edges with light color
                     const edges = createThickEdges(child);
                     scene.add(edges);
                     edgeGroups[index].push(edges);
@@ -168,7 +196,7 @@ document.fonts.ready.then(() => {
         return document.fonts.load(`400 ${fontSize * scaleFactor}px "${fontFamily}"`).then(() => {
             context.font = `400 ${fontSize * scaleFactor}px "${fontFamily}"`;
 
-            context.fillStyle = `#${colors.colorLight.toString(16).padStart(6, '0')}`;
+            context.fillStyle = `#${colors.light.toString(16).padStart(6, '0')}`;
             context.textAlign = 'center';
             context.textBaseline = 'middle';
 
@@ -199,7 +227,7 @@ document.fonts.ready.then(() => {
 
         data.forEach((item, index) => {
             item[0].forEach((text, textIndex) => {
-                createTextSprite(text, colors.colorLight).then(sprite => {
+                createTextSprite(text, colors.light).then(sprite => {
                     sprite.position.set(...item[1][textIndex]);
                     sprite.rotation.set(item[2][textIndex][0], item[2][textIndex][1], 0);
                     scenes[index].add(sprite);
@@ -209,10 +237,35 @@ document.fonts.ready.then(() => {
         });
     }
 
+    // Update theme and canvas colors
+    function updateTheme(theme) {
+        colors = themes[theme];
+        document.documentElement.setAttribute('data-theme', theme);
+
+        scenes.forEach((scene) => {
+            scene.background.setHex(colors.dark);
+            scene.children.forEach((child) => {
+                if (child.isGroup) {
+                    child.children.forEach((edge) => {
+                        edge.material.color.setHex(colors.light);
+                    });
+                } else if (child.isMesh) {
+                    child.material.color.setHex(colors.dark);
+                }
+            });
+        });
+
+        meshes.forEach((mesh) => {
+            mesh.material.color.setHex(colors.dark);
+        });
+
+        updateTextSprites(currentMode); // Update text sprite colors when theme changes
+    }
+
     // Initialize canvases and text sprites
-    setupCanvas('canvas1', './Objects/Cube_1.obj', 0);
-    setupCanvas('canvas2', './Objects/Cube_2.obj', 1);
-    setupCanvas('canvas3', './Objects/Cube_3.obj', 2);
+    setupCanvas('canvas1', './Objects/Boolean.obj', 0);
+    setupCanvas('canvas2', './Objects/Cube.obj', 1);
+    setupCanvas('canvas3', './Objects/Plane.obj', 2);
 
     updateTextSprites(currentMode);
 
@@ -227,5 +280,14 @@ document.fonts.ready.then(() => {
         button.classList.toggle('english-text', currentMode === 'english');
 
         updateTextSprites(currentMode);
+    });
+
+    // Button event listener for theme change
+    document.querySelector('.button-theme').addEventListener('click', () => {
+        const themeOrder = ['default', 'pastel', 'peach', 'forest'];
+        const currentIndex = themeOrder.indexOf(currentTheme);
+        currentTheme = themeOrder[(currentIndex + 1) % themeOrder.length];
+
+        updateTheme(currentTheme);
     });
 });

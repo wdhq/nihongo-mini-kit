@@ -1,6 +1,7 @@
 :root {
     --color-light: #D9D9D9;
     --color-dark: #000000;
+    --button-bg: #F6D0E3;
 }
 
 body, html {
@@ -43,6 +44,7 @@ canvas {
     transform: translateX(-50%);
     display: flex;
     gap: 1.25rem;
+    align-items: center;
 }
 
 .button {
@@ -90,6 +92,20 @@ canvas {
     transform: rotate(35deg);
 }
 
+.button-theme {
+    position: absolute;
+    right: -25vw;
+    width: 1rem;
+    height: 1rem;
+    background: var(--button-bg);
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.button-theme:active {
+    transform: scale(0.8);
+}
+
 .github-link {
     position: absolute;
     top: 87%;
@@ -103,7 +119,6 @@ canvas {
 }
 
 @media (max-width: 600px) {
-
     .outer-wrapper {
         height: 95vh;
         width: 100vw;
@@ -112,7 +127,7 @@ canvas {
     .container {
         display: block;
     }
-    
+
     #canvas1, #canvas2 {
         width: 45vw;
         height: 45vw;
@@ -125,4 +140,23 @@ canvas {
         display: block;
         margin: auto;
     }
+}
+
+/* Theme-specific styles */
+[data-theme="pastel"] {
+    --color-light: #464B9A;
+    --color-dark: #F6D0E3;
+    --button-bg: #DA624F;
+}
+
+[data-theme="peach"] {
+    --color-light: #EFEFEF;
+    --color-dark: #DA624F;
+    --button-bg: #2A5744;
+}
+
+[data-theme="forest"] {
+    --color-light: #FBECAF;
+    --color-dark: #2A5744;
+    --button-bg: #D9D9D9;
 }
