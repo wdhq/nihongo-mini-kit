@@ -55,7 +55,10 @@ canvas {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    user-select: none;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer/Edge */
+    user-select: none;         /* Standard */
 }
 
 .button-left {
@@ -128,6 +131,22 @@ canvas {
         display: block;
     }
 
+    .button-left:hover {
+        transform: rotate(0deg);
+    }
+    
+    .button-left:active {
+        transform: rotate(-35deg);
+    }
+
+    .button-right:hover {
+        transform: rotate(0deg);
+    }
+    
+    .button-right:active {
+        transform: rotate(35deg);
+    }
+
     #canvas1, #canvas2 {
         width: 45vw;
         height: 45vw;
@@ -142,7 +161,6 @@ canvas {
     }
 }
 
-/* Theme-specific styles */
 [data-theme="pastel"] {
     --color-light: #464B9A;
     --color-dark: #F6D0E3;

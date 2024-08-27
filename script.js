@@ -290,4 +290,18 @@ document.fonts.ready.then(() => {
 
         updateTheme(currentTheme);
     });
+
+    function resetTransformOnTouchEnd(button, delay = 300) {
+        button.addEventListener('touchend', function() {
+            setTimeout(() => {
+                this.style.transform = '';
+            }, delay);
+        });
+    }
+    
+    const buttonRight = document.querySelector('.button-right');
+    const buttonLeft = document.querySelector('.button-left');
+    
+    resetTransformOnTouchEnd(buttonRight);
+    resetTransformOnTouchEnd(buttonLeft);    
 });
