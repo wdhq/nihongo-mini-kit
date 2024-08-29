@@ -1,4 +1,5 @@
 document.fonts.ready.then(() => {
+    // Define theme colors
     const themes = {
         default: {
             light: 0xD9D9D9,
@@ -25,6 +26,7 @@ document.fonts.ready.then(() => {
     let currentTheme = 'default';
     let colors = themes[currentTheme];
 
+    // Define modes with corresponding text, positions, and rotations
     const modes = {
         hiragana: [
             [["なか", "そと"], [[0, 0, 0], [0, 0.55, 0]], [[0, 0], [0, 0]]],
@@ -49,9 +51,9 @@ document.fonts.ready.then(() => {
     const scenes = [];
     const cameras = [];
     const renderers = [];
-    const meshes = []; // Array to hold references to the mesh objects
+    const meshes = [];
 
-    // Initialize the canvas, scene, camera, and renderer
+    // Function to set up a canvas with Three.js
     function setupCanvas(canvasId, objPath, index) {
         const canvas = document.getElementById(canvasId);
         const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas });
@@ -80,7 +82,7 @@ document.fonts.ready.then(() => {
 
         setSize();
 
-        // Create thick edges around a 3D object
+        // Function to create thick edges for 3D objects
         function createThickEdges(object) {
             const edgesGeometry = new THREE.EdgesGeometry(object.geometry);
             const thickEdgesGroup = new THREE.Group();
@@ -109,22 +111,18 @@ document.fonts.ready.then(() => {
             return thickEdgesGroup;
         }
 
-        // Load 3D object and add to the scene
         const objLoader = new THREE.OBJLoader();
         objLoader.load(objPath, (object) => {
             object.traverse((child) => {
                 if (child.isMesh) {
-                    // Set the cube color to dark
                     const material = new THREE.MeshBasicMaterial({
                         color: colors.dark,
                         side: THREE.DoubleSide
                     });
                     child.material = material;
 
-                    // Store a reference to the mesh for later updates
                     meshes.push(child);
 
-                    // Create and add thick edges with light color
                     const edges = createThickEdges(child);
                     scene.add(edges);
                     edgeGroups[index].push(edges);
@@ -142,6 +140,7 @@ document.fonts.ready.then(() => {
         const targetPosition = new THREE.Vector3();
         const easing = 0.03;
 
+        // Update camera position based on mouse movement
         function updateCameraPosition(event) {
             const rect = canvas.getBoundingClientRect();
             const mouseX = (event.clientX - rect.left) / rect.width * 2 - 1;
@@ -177,26 +176,25 @@ document.fonts.ready.then(() => {
         renderers[index] = renderer;
     }
 
-    // Create a sprite with text
+    // Function to create a text sprite
     function createTextSprite(text, color) {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        const fontSize = 1;
-        const scaleFactor = 64;
+        return new Promise((resolve) => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            const fontSize = 1;
+            const scaleFactor = 64;
 
-        const fontFamily = currentMode === 'english' ? 'Inter' : 'Noto Sans JP';
-        context.font = `${fontSize}px "${fontFamily}"`;
+            const fontFamily = currentMode === 'english' ? 'Inter' : 'Noto Sans JP';
+            context.font = `${fontSize}px "${fontFamily}"`;
 
-        const textWidth = context.measureText(text).width;
-        const textHeight = fontSize;
+            const textWidth = context.measureText(text).width;
+            const textHeight = fontSize;
 
-        canvas.width = textWidth * scaleFactor;
-        canvas.height = textHeight * scaleFactor;
+            canvas.width = textWidth * scaleFactor;
+            canvas.height = textHeight * scaleFactor;
 
-        return document.fonts.load(`400 ${fontSize * scaleFactor}px "${fontFamily}"`).then(() => {
             context.font = `400 ${fontSize * scaleFactor}px "${fontFamily}"`;
-
-            context.fillStyle = `#${colors.light.toString(16).padStart(6, '0')}`;
+            context.fillStyle = `#${color.toString(16).padStart(6, '0')}`;
             context.textAlign = 'center';
             context.textBaseline = 'middle';
 
@@ -210,11 +208,11 @@ document.fonts.ready.then(() => {
             const sprite = new THREE.Sprite(spriteMaterial);
 
             sprite.scale.set(textWidth / 12, textHeight / 12, 1);
-            return sprite;
+            resolve(sprite);
         });
     }
 
-    // Update text sprites based on current mode
+    // Function to update text sprites based on the current mode
     function updateTextSprites(mode) {
         textSprites.forEach((sprites, index) => {
             sprites.forEach(sprite => {
@@ -237,7 +235,7 @@ document.fonts.ready.then(() => {
         });
     }
 
-    // Update theme and canvas colors
+    // Function to update the theme
     function updateTheme(theme) {
         colors = themes[theme];
         document.documentElement.setAttribute('data-theme', theme);
@@ -259,30 +257,48 @@ document.fonts.ready.then(() => {
             mesh.material.color.setHex(colors.dark);
         });
 
-        updateTextSprites(currentMode); // Update text sprite colors when theme changes
+        updateTextSprites(currentMode);
     }
 
-    // Initialize canvases and text sprites
+    // Initialize canvases and update text sprites
     setupCanvas('canvas1', './Objects/Boolean.obj', 0);
     setupCanvas('canvas2', './Objects/Cube.obj', 1);
     setupCanvas('canvas3', './Objects/Plane.obj', 2);
 
     updateTextSprites(currentMode);
 
-    // Button event listener for mode change
-    document.querySelector('.button-right').addEventListener('click', () => {
-        const modeOrder = ['hiragana', 'kanji', 'english'];
+    const modeOrder = ['hiragana', 'kanji', 'english'];
+    const buttonRight = document.querySelector('.button-right');
+    const welcomeText = document.getElementById('welcome-text');
+
+    function updateWelcomeText(mode) {
+        switch (mode) {
+            case 'hiragana':
+                welcomeText.textContent = 'ようこそ';
+                break;
+            case 'kanji':
+                welcomeText.textContent = '迎';
+                break;
+            case 'english':
+                welcomeText.textContent = 'Welcome';
+                break;
+        }
+        welcomeText.className = mode;
+    }
+
+    // Handle button clicks for changing modes
+    buttonRight.addEventListener('click', () => {
         const currentIndex = modeOrder.indexOf(currentMode);
         currentMode = modeOrder[(currentIndex + 1) % modeOrder.length];
 
-        const button = document.querySelector('.button-right');
-        button.textContent = currentMode === 'hiragana' ? 'あ' : currentMode === 'kanji' ? '漢' : 'A';
-        button.classList.toggle('english-text', currentMode === 'english');
+        buttonRight.textContent = currentMode === 'hiragana' ? 'あ' : currentMode === 'kanji' ? '漢' : 'A';
+        buttonRight.classList.toggle('english-text', currentMode === 'english');
 
         updateTextSprites(currentMode);
+        updateWelcomeText(currentMode);
     });
 
-    // Button event listener for theme change
+    // Handle button clicks for changing themes
     document.querySelector('.button-theme').addEventListener('click', () => {
         const themeOrder = ['default', 'pastel', 'peach', 'forest'];
         const currentIndex = themeOrder.indexOf(currentTheme);
@@ -291,6 +307,7 @@ document.fonts.ready.then(() => {
         updateTheme(currentTheme);
     });
 
+    // Reset transform on touch end for mobile devices
     function resetTransformOnTouchEnd(button, delay = 300) {
         button.addEventListener('touchend', function() {
             setTimeout(() => {
@@ -298,10 +315,57 @@ document.fonts.ready.then(() => {
             }, delay);
         });
     }
-    
-    const buttonRight = document.querySelector('.button-right');
+
     const buttonLeft = document.querySelector('.button-left');
-    
+
     resetTransformOnTouchEnd(buttonRight);
-    resetTransformOnTouchEnd(buttonLeft);    
+    resetTransformOnTouchEnd(buttonLeft);
+
+    const menuContainer = document.querySelector('.menu-container');
+
+    // Toggle menu container visibility on button click
+    buttonLeft.addEventListener('click', () => {
+        menuContainer.style.display = menuContainer.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    const sections = document.querySelectorAll('.page-section');
+    const links = document.querySelectorAll('.menu a');
+
+    // Show a section based on its ID
+    function showSection(sectionId) {
+        sections.forEach(section => {
+            section.style.display = section.id === sectionId ? 'block' : 'none';
+        });
+    }
+
+    // Handle menu links for section navigation
+    links.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const targetSection = event.target.id.replace('-link', '-section');
+            const section = document.getElementById(targetSection);
+    
+            // Temporarily hide the section to reset the fade-in animation
+            section.style.display = 'none';
+            
+            // Use a short timeout to allow the browser to register the display change
+            setTimeout(() => {
+                showSection(targetSection);
+    
+                if (targetSection === 'geometry-section') {
+                    setupCanvas('canvas1', './Objects/Boolean.obj', 0);
+                    setupCanvas('canvas2', './Objects/Cube.obj', 1);
+                    setupCanvas('canvas3', './Objects/Plane.obj', 2);
+                    updateTextSprites(currentMode);
+                }
+    
+                menuContainer.style.display = 'none';
+            }, 50); // Adjust this delay if necessary
+        });
+    });
+
+    // Show the welcome section by default
+    showSection('welcome-section');
+    menuContainer.style.display = 'none';
+    updateWelcomeText(currentMode); // Set initial text in the welcome section
 });

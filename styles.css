@@ -12,29 +12,18 @@ body, html {
     overflow: hidden;
 }
 
-.outer-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
-.container {
-    display: block;
-    text-align: center;
+.outer-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
     opacity: 0;
-    animation: fadeIn 1s forwards;
-}
-
-canvas {
-    width: 23vw;
-    height: 23vw;
-    margin: -1.5vw;
+    animation: fadeIn 0.5s forwards;
 }
 
 .buttons-container {
@@ -57,7 +46,7 @@ canvas {
     cursor: pointer;
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none;    /* Firefox */
-    -ms-user-select: none;     /* Internet Explorer/Edge */
+    -ms-user-select: none;     /* Edge */
     user-select: none;         /* Standard */
 }
 
@@ -109,6 +98,87 @@ canvas {
     transform: scale(0.8);
 }
 
+.menu-container {
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-dark);
+}
+
+.menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+}
+
+.menu li {
+    margin: 1.2rem 0;
+}
+
+.menu li a {
+    color: var(--color-light);
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.menu li a:hover {
+    text-decoration: underline;
+}
+
+.page-section {
+    display: none; /* Hide all sections by default */
+    text-align: center;
+    color: var(--color-light);
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+#welcome-section h1 {
+    display: block;
+    font-size: 6rem;
+    font-weight: 500;
+    transition: letter-spacing 0.3s ease;
+    cursor: default; /* Default cursor */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Edge */
+    user-select: none;         /* Standard */
+    transition: letter-spacing 0.3s ease;
+    letter-spacing: 0rem;
+}
+
+#welcome-section h1:hover {
+    letter-spacing: 0.1rem;
+}
+
+#welcome-text.english {
+    font-family: 'Inter', sans-serif;
+}
+
+#welcome-text.hiragana,
+#welcome-text.kanji {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+.container {
+    display: block;
+    text-align: center;
+}
+
+canvas {
+    width: 23vw;
+    height: 23vw;
+    margin: -1.5vw;
+}
+
 .github-link {
     position: absolute;
     top: 87%;
@@ -121,7 +191,7 @@ canvas {
     text-align: center;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .outer-wrapper {
         height: 95vh;
         width: 100vw;
