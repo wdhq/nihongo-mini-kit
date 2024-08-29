@@ -157,7 +157,7 @@ body, html {
 }
 
 #welcome-section h1:hover {
-    letter-spacing: 0.1rem;
+    letter-spacing: 0.15rem;
 }
 
 #welcome-text.english {
