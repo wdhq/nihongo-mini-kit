@@ -29,19 +29,19 @@ document.fonts.ready.then(() => {
     // Define modes with corresponding text, positions, and rotations
     const modes = {
         hiragana: [
-            [["なか", "そと"], [[0, 0, 0], [0, 0.55, 0]], [[0, 0], [0, 0]]],
-            [["まえ", "うしろ", "みぎ", "ひだり", "うえ", "した"], [[0, 0, 0.58], [0, 0, -0.63], [0.58, 0, 0], [-0.63, 0, 0], [0, 0.55, 0], [0, -0.55, 0]], [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
-            [["あいだ", "まわり"], [[0, 0, 0], [0.63, 0, 0]], [[0, 0], [0, 0]]],
+            [["なか", "そと"], [[0, 0, 0], [0, 0.57, 0]], [[0, 0], [0, 0]]],
+            [["まえ", "うしろ", "みぎ", "ひだり", "うえ", "した"], [[0, 0, 0.61], [0, 0, -0.67], [0.62, 0, 0], [-0.67, 0, 0], [0, 0.57, 0], [0, -0.56, 0]], [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
+            [["あいだ", "まわり"], [[0, 0, 0], [0.67, 0, 0]], [[0, 0], [0, 0]]],
         ],
         kanji: [
-            [["中", "外"], [[0, 0, 0], [0, 0.55, 0]], [[0, 0], [0, 0]]],
-            [["前", "後ろ", "右", "左", "上", "下"], [[0, 0, 0.55], [0, 0, -0.58], [0.55, 0, 0], [-0.55, 0, 0], [0, 0.55, 0], [0, -0.55, 0]], [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
-            [["間", "周り"], [[0, 0, 0], [0.6, 0, 0]], [[0, 0], [0, 0]]],
+            [["中", "外"], [[0, 0, 0], [0, 0.58, 0]], [[0, 0], [0, 0]]],
+            [["前", "後ろ", "右", "左", "上", "下"], [[0, 0, 0.58], [0, 0, -0.62], [0.58, 0, 0], [-0.58, 0, 0], [0, 0.58, 0], [0, -0.57, 0]], [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
+            [["間", "周り"], [[0, 0, 0], [0.63, 0, 0]], [[0, 0], [0, 0]]],
         ],
         english: [
-            [["Inside", "Outside"], [[0, 0, 0], [0, 0.55, 0]], [[0, 0], [0, 0]]],
-            [["Front", "Back", "Right", "Left", "Top", "Bottom"], [[0, 0, 0.62], [0, 0, -0.61], [0.61, 0, 0], [-0.59, 0, 0], [0, 0.55, 0], [0, -0.55, 0]], [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
-            [["Between", "Around"], [[0, 0, 0], [0.66, 0, 0]], [[0, 0], [0, 0]]],
+            [["Inside", "Outside"], [[0, 0, 0], [0, 0.57, 0]], [[0, 0], [0, 0]]],
+            [["Front", "Back", "Right", "Left", "Top", "Bottom"], [[0, 0, 0.65], [0, 0, -0.64], [0.64, 0, 0], [-0.61, 0, 0], [0, 0.58, 0], [0, -0.57, 0]], [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
+            [["Between", "Around"], [[0, 0, 0], [0.7, 0, 0]], [[0, 0], [0, 0]]],
         ]
     };
 
@@ -86,7 +86,7 @@ document.fonts.ready.then(() => {
         function createThickEdges(object) {
             const edgesGeometry = new THREE.EdgesGeometry(object.geometry);
             const thickEdgesGroup = new THREE.Group();
-            const edgeThickness = 0.003;
+            const edgeThickness = 0.004;
 
             edgesGeometry.attributes.position.array.forEach((_, i, array) => {
                 if (i % 6 === 0) {
@@ -181,7 +181,7 @@ document.fonts.ready.then(() => {
         return new Promise((resolve) => {
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
-            const fontSize = 1;
+            const fontSize = 1.4;
             const scaleFactor = 64;
 
             const fontFamily = currentMode === 'english' ? 'Inter' : 'Noto Sans JP';
@@ -274,16 +274,40 @@ document.fonts.ready.then(() => {
     function updateWelcomeText(mode) {
         switch (mode) {
             case 'hiragana':
-                welcomeText.textContent = 'ようこそ';
+                welcomeText.textContent = 'こんにちは';
                 break;
             case 'kanji':
-                welcomeText.textContent = '迎';
+                welcomeText.textContent = '今日は';
                 break;
             case 'english':
-                welcomeText.textContent = 'Welcome';
+                welcomeText.textContent = 'Hello';
                 break;
         }
         welcomeText.className = mode;
+    }
+
+    function updateMenuText(mode) {
+        const menuItems = {
+            hiragana: {
+                welcome: 'こんにちは 👋',
+                geometry: 'きかがく 📐',
+                physics: 'ぶつりがく 🧪'
+            },
+            kanji: {
+                welcome: '今日は 👋',
+                geometry: '幾何学 📐',
+                physics: '物理学 🧪'
+            },
+            english: {
+                welcome: 'Hello 👋',
+                geometry: 'Geometry 📐',
+                physics: 'Physics 🧪'
+            }
+        };
+
+        document.getElementById('welcome-link').textContent = menuItems[mode].welcome;
+        document.getElementById('geometry-link').textContent = menuItems[mode].geometry;
+        document.getElementById('physics-link').textContent = menuItems[mode].physics;
     }
 
     // Handle button clicks for changing modes
@@ -296,6 +320,7 @@ document.fonts.ready.then(() => {
 
         updateTextSprites(currentMode);
         updateWelcomeText(currentMode);
+        updateMenuText(currentMode);
     });
 
     // Handle button clicks for changing themes
@@ -368,4 +393,5 @@ document.fonts.ready.then(() => {
     showSection('welcome-section');
     menuContainer.style.display = 'none';
     updateWelcomeText(currentMode); // Set initial text in the welcome section
+    updateMenuText(currentMode); // Set initial text in the menu
 });

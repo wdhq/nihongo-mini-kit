@@ -114,19 +114,21 @@ body, html {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    margin-bottom: 10vh;
     text-align: center;
     font-family: 'Inter', sans-serif;
-    font-size: 1rem;
+    font-size: 1.4rem;
+    font-weight: 400;
 }
 
 .menu li {
-    margin: 1.2rem 0;
+    margin: 1.4rem 0;
 }
 
 .menu li a {
     color: var(--color-light);
     text-decoration: none;
-    font-size: 1.2rem;
+    margin: 1.4rem;
 }
 
 .menu li a:hover {
@@ -145,8 +147,7 @@ body, html {
     display: block;
     font-size: 6rem;
     font-weight: 500;
-    transition: letter-spacing 0.3s ease;
-    cursor: default; /* Default cursor */
+    cursor: default;
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none;    /* Firefox */
     -ms-user-select: none;     /* Edge */
@@ -176,7 +177,7 @@ body, html {
 canvas {
     width: 23vw;
     height: 23vw;
-    margin: -1.5vw;
+    margin: -1.12vw;
 }
 
 .github-link {
@@ -228,6 +229,12 @@ canvas {
         height: 45vw;
         display: block;
         margin: auto;
+    }
+
+    #welcome-text.english,
+    #welcome-text.hiragana,
+    #welcome-text.kanji {
+        font-size: 4rem;
     }
 }
 
