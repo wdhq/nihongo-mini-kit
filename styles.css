@@ -2,9 +2,14 @@
     --color-light: #D9D9D9;
     --color-dark: #000000;
     --button-bg: #F6D0E3;
+    --border-radius: 0.3rem;
+    --transition-ease: 0.3s ease;
+    --button-size: 2.5rem;
+    --font-main: 'Inter', 'Noto Sans JP', sans-serif;
 }
 
 body, html {
+    font-family: var(--font-main);
     margin: 0;
     padding: 0;
     height: 100%;
@@ -37,25 +42,28 @@ body, html {
 }
 
 .button {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 0.3rem;
+    width: var(--button-size);
+    height: var(--button-size);
+    border-radius: var(--border-radius);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none;    /* Firefox */
-    -ms-user-select: none;     /* Edge */
-    user-select: none;         /* Standard */
+    transition: transform var(--transition-ease);
+    -webkit-user-select: none;  /* Safari */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* Internet Explorer/Edge */
+    user-select: none;          /* Standard */
+}
+
+.button-left, .button-right {
+    border: 1px solid var(--color-light);
 }
 
 .button-left {
-    border: 1px solid var(--color-light);
     background: none;
     color: var(--color-light);
     font-size: 1.2rem;
-    transition: transform 0.3s ease;
 }
 
 .button-left:hover {
@@ -67,13 +75,10 @@ body, html {
 }
 
 .button-right {
-    border: 1px solid var(--color-light);
     background: var(--color-light);
     color: var(--color-dark);
-    font-family: 'Inter', sans-serif;
     font-size: 1rem;
     border: none;
-    transition: transform 0.3s ease;
 }
 
 .button-right:hover {
@@ -91,7 +96,7 @@ body, html {
     height: 1rem;
     background: var(--button-bg);
     border-radius: 50%;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-ease);
 }
 
 .button-theme:active {
@@ -99,7 +104,7 @@ body, html {
 }
 
 .menu-container {
-    display: none; /* Hidden by default */
+    display: none;
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -113,10 +118,8 @@ body, html {
 .menu {
     list-style-type: none;
     padding: 0;
-    margin: 0;
-    margin-bottom: 5vh;
+    margin: 0 0 5vh 0;
     text-align: center;
-    font-family: 'Inter', sans-serif;
     font-size: 1.4rem;
     font-weight: 400;
 }
@@ -136,7 +139,7 @@ body, html {
 }
 
 .page-section {
-    display: none; /* Hide all sections by default */
+    display: none;
     text-align: center;
     color: var(--color-light);
     opacity: 0;
@@ -144,33 +147,18 @@ body, html {
 }
 
 #welcome-section h1 {
-    display: block;
     font-size: 6rem;
     font-weight: 500;
     cursor: default;
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none;    /* Firefox */
-    -ms-user-select: none;     /* Edge */
-    user-select: none;         /* Standard */
-    transition: letter-spacing 0.3s ease;
-    letter-spacing: 0rem;
+    transition: letter-spacing var(--transition-ease);
+    letter-spacing: 0;
 }
 
 #welcome-section h1:hover {
     letter-spacing: 0.15rem;
 }
 
-#welcome-text.english {
-    font-family: 'Inter', sans-serif;
-}
-
-#welcome-text.hiragana,
-#welcome-text.kanji {
-    font-family: 'Noto Sans JP', sans-serif;
-}
-
 .container {
-    display: block;
     text-align: center;
 }
 
@@ -180,6 +168,107 @@ canvas {
     margin: -1.12vw;
 }
 
+#physics-section {
+    margin-top: 10vh;
+}
+
+.circle-value, .circle-text, .circle, .button, #welcome-section {
+    -webkit-user-select: none;  /* Safari */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* Internet Explorer/Edge */
+    user-select: none;          /* Standard */
+}
+
+#circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4.5vw;
+}
+
+.circle {
+    position: relative;
+    width: 16.5vw;
+    height: 16.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.circle:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1.4px solid var(--color-light);
+    border-radius: 50%;
+    transition: transform 0.5s ease;
+    z-index: -1;
+}
+
+.circle:hover:before, .circle:active:before {
+    transform: scale(0.5);
+}
+
+.circle:hover, .circle:active {
+    color: var(--color-light);
+}
+
+.circle-value {
+    position: absolute;
+    top: -4rem;
+    font-size: 1.2rem;
+    transition: transform 0.4s ease;
+}
+
+.circle-text {
+    font-size: 1.2rem;
+    transition: opacity 0.3s ease;
+    opacity: 1;
+}
+
+#circle-container .circle:nth-child(2):before {
+    transition: transform 3s ease;
+}
+
+#circle-container .circle:nth-child(2):hover:before {
+    transition: transform 0.1s ease;
+}
+
+#third-circle:before {
+    transition: transform 0.3s steps(2);
+}
+
+#third-circle:hover:before, #third-circle:active:before {
+    transform: scale(0.5);
+}
+
+.dashed-border:before {
+    border: 1.5px dashed !important;
+}
+
+#switch-button {
+    margin-top: 2rem;
+    margin-left: 42.5vw;
+    color: var(--color-light);
+    cursor: pointer;
+    text-align: center;
+    transition: transform var(--transition-ease);
+    line-height: 1;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#switch-button:active {
+    transform: translateY(10px);
+}
+
 .github-link {
     position: absolute;
     top: 87%;
@@ -187,7 +276,7 @@ canvas {
     transform: translateX(-50%);
     color: var(--color-light);
     text-decoration: underline;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-main);
     font-size: 0.9rem;
     text-align: center;
 }
@@ -198,43 +287,62 @@ canvas {
         width: 100vw;
     }
 
-    .container {
-        display: block;
-    }
-
-    .button-left:hover {
+    .button-left:hover, .button-right:hover {
         transform: rotate(0deg);
     }
     
     .button-left:active {
         transform: rotate(-35deg);
     }
-
-    .button-right:hover {
-        transform: rotate(0deg);
-    }
     
     .button-right:active {
         transform: rotate(35deg);
     }
 
-    #canvas1, #canvas2 {
+    #canvas1, #canvas2, #canvas3 {
         width: 45vw;
         height: 45vw;
         display: inline-block;
     }
 
-    #canvas3 {
-        width: 45vw;
-        height: 45vw;
-        display: block;
-        margin: auto;
+    #welcome-section h1 {
+        font-size: 4rem;
     }
 
-    #welcome-text.english,
-    #welcome-text.hiragana,
-    #welcome-text.kanji {
-        font-size: 4rem;
+    #physics-section {
+        margin-top: 2.5vh;
+    }
+
+    #circle-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 13vw;
+    }
+
+    .circle {
+        top: 2rem;
+        width: 35vw;
+        height: 35vw;
+    }
+
+    .circle-value {
+        top: -2rem;
+        font-size: 0.8rem;
+    }
+
+    .circle-text {
+        font-size: 0.8rem;
+    }
+
+    #switch-button {
+        margin-top: 3.2rem;
+        margin-left: 0;
+    }
+
+    #third-circle {
+        display: flex;
+        justify-content: center;
     }
 }
 

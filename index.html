@@ -24,14 +24,28 @@
                 <h1 id="welcome-text"></h1>
             </div>
 
-            </div>
             <div id="geometry-section" class="page-section">
                 <canvas id="canvas1"></canvas>
                 <canvas id="canvas2"></canvas>
                 <canvas id="canvas3"></canvas>
             </div>
             <div id="physics-section" class="page-section">
-            </div>
+                <div id="circle-container">
+                    <div class="circle">
+                        <span class="circle-value">35ど</span>
+                        <span class="circle-text">あつい</span>
+                    </div>
+                    <div class="circle">
+                        <span class="circle-value">2キロメートル</span>
+                        <span class="circle-text">おそい</span>
+                    </div>
+                    <div class="circle" id="third-circle">
+                        <span class="circle-value" id="circle3-value">200センチ</span>
+                        <span class="circle-text" id="circle3-text">おっきい</span>
+                    </div>
+                </div>
+                <div id="switch-button" class="button">○</div>
+            </div>                                           
         </div>
     </div>
 
@@ -57,5 +71,4 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
     <script src="script.js"></script>
 </body>
-
 </html>
