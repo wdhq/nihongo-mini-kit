@@ -4,7 +4,7 @@
 > The current stable version includes the geometry and physics sections.
 > I can't continue at the moment because my cat is sitting on the laptop.
 
-<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgj48WH_fowhdQrhsCCY-eitfGWwRamLyT1SdyXSP3avjoh5h_-Vr-DMtswGzJ_VpD0ejjyV37DIQHPBjaUleOX2ESMEDIs7tA3qRduB2WoyLjTOlAqPsOpNxX54VltCbiRuhnx_YJep4yU/s400/shigoto_zaitaku_cat_man.png" alt="Image" style="width: 150px;">
+<img src="https://github.com/user-attachments/assets/8c3c9c5a-c96d-4ddd-a0ce-f2ef8a404601" alt="いらすとや Takashi Mifune" title="いらすとや Takashi Mifune" style="width: 150px;">
 
 ## About
 
