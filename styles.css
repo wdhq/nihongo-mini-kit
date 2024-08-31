@@ -15,6 +15,10 @@ body, html {
     height: 100%;
     background-color: var(--color-dark);
     overflow: hidden;
+    -webkit-user-select: none;  /* Safari */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* Internet Explorer/Edge */
+    user-select: none;          /* Standard */
 }
 
 @keyframes fadeIn {
@@ -50,10 +54,6 @@ body, html {
     align-items: center;
     cursor: pointer;
     transition: transform var(--transition-ease);
-    -webkit-user-select: none;  /* Safari */
-    -moz-user-select: none;     /* Firefox */
-    -ms-user-select: none;      /* Internet Explorer/Edge */
-    user-select: none;          /* Standard */
 }
 
 .button-left, .button-right {
@@ -170,13 +170,6 @@ canvas {
 
 #physics-section {
     margin-top: 10vh;
-}
-
-.circle-value, .circle-text, .circle, .button, #welcome-section {
-    -webkit-user-select: none;  /* Safari */
-    -moz-user-select: none;     /* Firefox */
-    -ms-user-select: none;      /* Internet Explorer/Edge */
-    user-select: none;          /* Standard */
 }
 
 #circle-container {
