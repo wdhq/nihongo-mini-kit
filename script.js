@@ -304,10 +304,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 circleValues[i].textContent = data[Object.keys(data)[i]].value;
             });
 
-        // Setup hover events and touch events
+
+        // Setup touch events for letter-spacing transition on the welcome section heading
+        const welcomeHeading = document.querySelector("#welcome-section h1");
+
+        // Handle touch start
+        welcomeHeading.addEventListener("touchstart", function() {
+            welcomeHeading.style.letterSpacing = "0.15rem";
+        });
+    
+        // Handle touch end
+        welcomeHeading.addEventListener("touchend", function() {
+            setTimeout(function() {
+                welcomeHeading.style.letterSpacing = "0";
+            }, 300); // Match the CSS transition duration
+        });
+    
+        // Setup hover events and touch events for circles
         circles.forEach((circle, index) => {
             const key = Object.keys(data)[index];
-
+    
             // Handle mouse hover
             circle.onmouseenter = () => {
                 circleTexts[index].textContent = data[key].hoverText;
@@ -329,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     200
                 );
             };
-
+    
             // Handle touch start
             circle.addEventListener('touchstart', () => {
                 circleTexts[index].textContent = data[key].hoverText;
@@ -341,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     200
                 );
             });
-
+    
             // Handle touch end
             circle.addEventListener('touchend', () => {
                 circleTexts[index].textContent = data[key].text;

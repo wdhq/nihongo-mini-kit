@@ -325,15 +325,15 @@ canvas {
 
     .circle-value {
         top: -2rem;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
 
     .circle-text {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
 
     #switch-button {
-        margin-top: 3.2rem;
+        margin-top: 3.3rem;
         margin-left: 0;
     }
 
@@ -341,7 +341,12 @@ canvas {
         display: flex;
         justify-content: center;
     }
+}
 
+@media (hover: none) {
+    .circle:hover, #third-circle:hover, .dashed-border:before, .dashed-border:hover {
+        pointer-events: none;
+    }
 }
 
 [data-theme="pastel"] {
