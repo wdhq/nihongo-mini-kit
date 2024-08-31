@@ -344,7 +344,7 @@ canvas {
 }
 
 @media (hover: none) {
-    .circle:hover, #third-circle:hover, .dashed-border:before, .dashed-border:hover {
+    .circle:hover, .circle:active, #third-circle:hover, #third-circle:active, .dashed-border:before, .dashed-border:hover, .dashed-border:active {
         pointer-events: none;
     }
 }
