@@ -325,6 +325,10 @@ canvas {
         width: 35vw;
         height: 35vw;
     }
+    
+    .circle:before {
+        border: 1px solid var(--color-light);
+    }
 
     .circle-value {
         top: -2rem;
@@ -344,6 +348,7 @@ canvas {
         display: flex;
         justify-content: center;
     }
+
 }
 
 [data-theme="pastel"] {
