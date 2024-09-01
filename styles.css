@@ -235,7 +235,7 @@ canvas {
 }
 
 #third-circle:before {
-    transition: transform 0.3s steps(2);
+    transition: transform 0.3s steps(3);
 }
 
 #third-circle:hover:before, #third-circle:active:before {
