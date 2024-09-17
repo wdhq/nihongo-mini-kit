@@ -91,7 +91,7 @@ body, html {
 
 .button-theme {
     position: absolute;
-    right: -25vw;
+    right: -19vw;
     width: 1rem;
     height: 1rem;
     background: var(--button-bg);
@@ -101,6 +101,16 @@ body, html {
 
 .button-theme:active {
     transform: scale(0.8);
+}
+
+.github {
+    position: absolute;
+    transform: translateX(-19vw);
+    color: var(--color-light);
+    text-decoration: underline;
+    font-family: var(--font-main);
+    font-size: 1.25rem;
+    text-align: center;
 }
 
 .menu-container {
@@ -262,21 +272,9 @@ canvas {
     transform: translateY(10px);
 }
 
-.github {
-    position: absolute;
-    top: 85%;
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--color-light);
-    text-decoration: underline;
-    font-family: var(--font-main);
-    font-size: 2rem;
-    text-align: center;
-}
-
 @media (max-width: 768px) {
     .outer-wrapper {
-        height: 95vh;
+        height: 100vh;
         width: 100vw;
     }
 
@@ -292,6 +290,18 @@ canvas {
         transform: rotate(35deg);
     }
 
+    .button-theme {
+        right: -14vw;
+    }
+
+    .github {
+        transform: translateX(-14vw);
+    }
+
+    #geometry-section {
+        margin-top: 5vh;
+    }
+
     #canvas1, #canvas2, #canvas3 {
         width: 45vw;
         height: 45vw;
@@ -303,7 +313,7 @@ canvas {
     }
 
     #physics-section {
-        margin-top: 2.5vh;
+        margin-top: 6vh;
     }
 
     #circle-container {
