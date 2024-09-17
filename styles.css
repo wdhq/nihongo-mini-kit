@@ -262,15 +262,15 @@ canvas {
     transform: translateY(10px);
 }
 
-.github-link {
+.github {
     position: absolute;
-    top: 87%;
+    top: 85%;
     left: 50%;
     transform: translateX(-50%);
     color: var(--color-light);
     text-decoration: underline;
     font-family: var(--font-main);
-    font-size: 0.9rem;
+    font-size: 2rem;
     text-align: center;
 }
 
