@@ -178,7 +178,7 @@ canvas {
 }
 
 #physics-section {
-    margin-top: 10vh;
+    margin-top: 6vh;
 }
 
 #circle-container {
@@ -304,11 +304,11 @@ canvas {
 
     .circle-value {
         top: -2rem;
-        font-size: 0.7rem;
+        font-size: 0.9rem;
     }
 
     .circle-text {
-        font-size: 0.7rem;
+        font-size: 0.9rem;
     }
 }
 
