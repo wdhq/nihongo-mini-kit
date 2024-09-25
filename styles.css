@@ -174,7 +174,7 @@ body, html {
 canvas {
     width: 23vw;
     height: 23vw;
-    margin: -1.15vw;
+    margin: -1.125vw;
 }
 
 #physics-section {
