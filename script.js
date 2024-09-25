@@ -1,5 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.fonts.ready.then(() => {
+
+        // ------------------
+        // Constants and Data
+        // ------------------
+
         // Theme Definitions
         const themes = {
             default: { light: 0xD9D9D9, dark: 0x000000, button: '#F6D0E3' },
@@ -8,11 +13,38 @@ document.addEventListener('DOMContentLoaded', () => {
             forest: { light: 0xFBECAF, dark: 0x2A5744, button: '#D9D9D9' }
         };
 
+        // Mode Definitions
+        const modes = {
+            hiragana: [
+                [["なか", "そと"], [[0, 0, 0], [0, 0.57, 0]], [[0, 0], [0, 0]]],
+                [["まえ", "うしろ", "みぎ", "ひだり", "うえ", "した"],
+                 [[0, 0, 0.61], [0, 0, -0.67], [0.62, 0, 0], [-0.67, 0, 0], [0, 0.57, 0], [0, -0.56, 0]],
+                 [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
+                [["あいだ", "まわり"], [[0, 0, 0], [0.67, 0, 0]], [[0, 0], [0, 0]]],
+            ],
+            kanji: [
+                [["中", "外"], [[0, 0, 0], [0, 0.58, 0]], [[0, 0], [0, 0]]],
+                [["前", "後ろ", "右", "左", "上", "下"],
+                 [[0, 0, 0.58], [0, 0, -0.62], [0.58, 0, 0], [-0.58, 0, 0], [0, 0.58, 0], [0, -0.57, 0]],
+                 [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
+                [["間", "周り"], [[0, 0, 0], [0.63, 0, 0]], [[0, 0], [0, 0]]],
+            ],
+            english: [
+                [["Inside", "Outside"], [[0, 0, 0], [0, 0.57, 0]], [[0, 0], [0, 0]]],
+                [["Front", "Back", "Right", "Left", "Top", "Bottom"],
+                 [[0, 0, 0.65], [0, 0, -0.64], [0.64, 0, 0], [-0.61, 0, 0], [0, 0.58, 0], [0, -0.57, 0]],
+                 [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
+                [["Between", "Around"], [[0, 0, 0], [0.7, 0, 0]], [[0, 0], [0, 0]]],
+            ]
+        };
+
+        // Theme and Mode Orders
         const themeOrder = ['default', 'pastel', 'peach', 'forest'];
         const modeOrder = ['hiragana', 'kanji', 'english'];
+
+        // Initial State Variables
         let currentTheme = 'default';
         let colors = themes[currentTheme];
-        let isKilo = true;
         let currentMode = 'hiragana';
 
         // DOM Elements
@@ -22,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.circle:nth-child(3)')
         ];
         const [firstCircle, secondCircle, thirdCircle] = circles;
-        thirdCircle.classList.add('dashed-border');
 
         const circleTexts = [
             firstCircle.querySelector('.circle-text'),
@@ -38,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const buttonRight = document.querySelector('.button-right');
         const buttonLeft = document.querySelector('.button-left');
         const themeButton = document.querySelector('.button-theme');
-        const switchButton = document.getElementById('switch-button');
         const menuContainer = document.querySelector('.menu-container');
         const sections = document.querySelectorAll('.page-section');
         const links = document.querySelectorAll('.menu a');
@@ -55,30 +85,42 @@ document.addEventListener('DOMContentLoaded', () => {
         const renderers = [];
         const meshes = [];
 
-        // Mode Definitions
-        const modes = {
-            hiragana: [
-                [["なか", "そと"], [[0, 0, 0], [0, 0.57, 0]], [[0, 0], [0, 0]]],
-                [["まえ", "うしろ", "みぎ", "ひだり", "うえ", "した"], 
-                 [[0, 0, 0.61], [0, 0, -0.67], [0.62, 0, 0], [-0.67, 0, 0], [0, 0.57, 0], [0, -0.56, 0]], 
-                 [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
-                [["あいだ", "まわり"], [[0, 0, 0], [0.67, 0, 0]], [[0, 0], [0, 0]]],
-            ],
-            kanji: [
-                [["中", "外"], [[0, 0, 0], [0, 0.58, 0]], [[0, 0], [0, 0]]],
-                [["前", "後ろ", "右", "左", "上", "下"], 
-                 [[0, 0, 0.58], [0, 0, -0.62], [0.58, 0, 0], [-0.58, 0, 0], [0, 0.58, 0], [0, -0.57, 0]], 
-                 [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
-                [["間", "周り"], [[0, 0, 0], [0.63, 0, 0]], [[0, 0], [0, 0]]],
-            ],
-            english: [
-                [["Inside", "Outside"], [[0, 0, 0], [0, 0.57, 0]], [[0, 0], [0, 0]]],
-                [["Front", "Back", "Right", "Left", "Top", "Bottom"], 
-                 [[0, 0, 0.65], [0, 0, -0.64], [0.64, 0, 0], [-0.61, 0, 0], [0, 0.58, 0], [0, -0.57, 0]], 
-                 [[0, 0], [Math.PI, 0], [Math.PI / 2, 0], [-Math.PI / 2, 0], [0, Math.PI / 2], [0, -Math.PI / 2]]],
-                [["Between", "Around"], [[0, 0, 0], [0.7, 0, 0]], [[0, 0], [0, 0]]],
-            ]
+        // Circle Data Templates
+        const circleDataTemplates = {
+            hiragana: {
+                first: { text: 'おもい', value: '50キロ', hoverText: 'かるい', hoverValue: '1キロ' },
+                second: { text: 'おそい', value: '2キロメートル', hoverText: 'はやい', hoverValue: '60キロメートル' },
+                third: { text: 'おっきい', value: '200センチ', hoverText: 'ちいさい', hoverValue: '10センチ' }
+            },
+            kanji: {
+                first: { text: '重い', value: '50キロ', hoverText: '軽い', hoverValue: '1キロ' },
+                second: { text: '遅い', value: '2キロメートル', hoverText: '速い', hoverValue: '60キロメートル' },
+                third: { text: '大きい', value: '200センチ', hoverText: '小さい', hoverValue: '10センチ' }
+            },
+            english: {
+                first: { text: 'Heavy', value: '50 Kilograms', hoverText: 'Light', hoverValue: '1 Kilograms' },
+                second: { text: 'Slow', value: '2 Km/h', hoverText: 'Fast', hoverValue: '60 Km/h' },
+                third: { text: 'Big', value: '200 Centimeters', hoverText: 'Small', hoverValue: '10 Centimeters' }
+            }
         };
+
+        // Welcome Texts
+        const welcomeTexts = {
+            hiragana: { text: 'こんにちは', font: 'Noto Sans JP' },
+            kanji: { text: '今日は', font: 'Noto Sans JP' },
+            english: { text: 'Hello', font: 'Inter' }
+        };
+
+        // Menu Items
+        const menuItems = {
+            hiragana: { welcome: 'こんにちは 👋', geometry: 'きかがく 📐', physics: 'ぶつりがく 🧪' },
+            kanji: { welcome: '今日は 👋', geometry: '幾何学 📐', physics: '物理学 🧪' },
+            english: { welcome: 'Hello 👋', geometry: 'Geometry 📐', physics: 'Physics 🧪' }
+        };
+
+        // ---------
+        // Functions
+        // ---------
 
         // Setup Three.js Canvas
         function setupCanvas(canvasId, objPath, index) {
@@ -272,130 +314,122 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update Circle Texts and Values
         function updateCircleTexts() {
-            const circleData = {
-                hiragana: {
-                    first: { text: 'あつい', value: '35ど', hoverText: 'さむい', hoverValue: '5ど' },
-                    second: { text: 'おそい', value: '2キロメートル', hoverText: 'はやい', hoverValue: '60キロメートル' },
-                    third: isKilo
-                        ? { text: 'おっきい', value: '200センチ', hoverText: 'ちいさい', hoverValue: '10センチ' }
-                        : { text: 'おもい', value: '50キロ', hoverText: 'かるい', hoverValue: '1キロ' }
-                },
-                kanji: {
-                    first: { text: '熱い', value: '35度', hoverText: '寒い', hoverValue: '5度' },
-                    second: { text: '遅い', value: '2キロメートル', hoverText: '速い', hoverValue: '60キロメートル' },
-                    third: isKilo
-                        ? { text: '大きい', value: '200センチ', hoverText: '小さい', hoverValue: '10センチ' }
-                        : { text: '重い', value: '50キロ', hoverText: '軽い', hoverValue: '1キロ' }
-                },
-                english: {
-                    first: { text: 'Hot', value: '35°C', hoverText: 'Cold', hoverValue: '5°C' },
-                    second: { text: 'Slow', value: '2 Km/h', hoverText: 'Fast', hoverValue: '60 Km/h' },
-                    third: isKilo
-                        ? { text: 'Big', value: '200 Centimeters', hoverText: 'Small', hoverValue: '10 Centimeters' }
-                        : { text: 'Heavy', value: '50 Kilograms', hoverText: 'Light', hoverValue: '1 Kilograms' }
-                }
-            };
-
-            const data = circleData[currentMode];
+            const data = circleDataTemplates[currentMode];
 
             // Update texts and values
-            [0, 1, 2].forEach(i => {
-                circleTexts[i].textContent = data[Object.keys(data)[i]].text;
-                circleValues[i].textContent = data[Object.keys(data)[i]].value;
+            circleTexts[0].textContent = data.first.text;
+            circleValues[0].textContent = data.first.value;
+
+            circleTexts[1].textContent = data.second.text;
+            circleValues[1].textContent = data.second.value;
+
+            const thirdData = data.third;
+            circleTexts[2].textContent = thirdData.text;
+            circleValues[2].textContent = thirdData.value;
+
+            // Handle hover and touch events for circles
+            circles.forEach((circle, index) => {
+                let key;
+                if (index === 0) key = 'first';
+                else if (index === 1) key = 'second';
+                else key = 'third';
+
+                // Handle mouse hover
+                circle.onmouseenter = () => {
+                    circleTexts[index].textContent = data[key].hoverText;
+                    animateValueChange(
+                        circleValues[index],
+                        parseFloat(data[key].value),
+                        parseFloat(data[key].hoverValue),
+                        data[key].hoverValue.replace(/\d/g, ''),
+                        200
+                    );
+                };
+                circle.onmouseleave = () => {
+                    circleTexts[index].textContent = data[key].text;
+                    animateValueChange(
+                        circleValues[index],
+                        parseFloat(data[key].hoverValue),
+                        parseFloat(data[key].value),
+                        data[key].value.replace(/\d/g, ''),
+                        200
+                    );
+                };
+
+                // Handle touch events
+                circle.addEventListener('touchstart', () => {
+                    circleTexts[index].textContent = data[key].hoverText;
+                    animateValueChange(
+                        circleValues[index],
+                        parseFloat(data[key].value),
+                        parseFloat(data[key].hoverValue),
+                        data[key].hoverValue.replace(/\d/g, ''),
+                        200
+                    );
+                });
+
+                circle.addEventListener('touchend', () => {
+                    circleTexts[index].textContent = data[key].text;
+                    animateValueChange(
+                        circleValues[index],
+                        parseFloat(data[key].hoverValue),
+                        parseFloat(data[key].value),
+                        data[key].value.replace(/\d/g, ''),
+                        200
+                    );
+                });
             });
-
-
-        // Setup touch events for letter-spacing transition on the welcome section heading
-        const welcomeHeading = document.querySelector("#welcome-section h1");
-
-        // Handle touch start
-        welcomeHeading.addEventListener("touchstart", function() {
-            welcomeHeading.style.letterSpacing = "0.15rem";
-        });
-    
-        // Handle touch end
-        welcomeHeading.addEventListener("touchend", function() {
-            setTimeout(function() {
-                welcomeHeading.style.letterSpacing = "0";
-            }, 300); // Match the CSS transition duration
-        });
-    
-        // Setup hover events and touch events for circles
-        circles.forEach((circle, index) => {
-            const key = Object.keys(data)[index];
-    
-            // Handle mouse hover
-            circle.onmouseenter = () => {
-                circleTexts[index].textContent = data[key].hoverText;
-                animateValueChange(
-                    circleValues[index],
-                    parseFloat(data[key].value),
-                    parseFloat(data[key].hoverValue),
-                    data[key].hoverValue.replace(/\d/g, ''),
-                    200
-                );
-            };
-            circle.onmouseleave = () => {
-                circleTexts[index].textContent = data[key].text;
-                animateValueChange(
-                    circleValues[index],
-                    parseFloat(data[key].hoverValue),
-                    parseFloat(data[key].value),
-                    data[key].value.replace(/\d/g, ''),
-                    200
-                );
-            };
-    
-            // Handle touch start
-            circle.addEventListener('touchstart', () => {
-                circleTexts[index].textContent = data[key].hoverText;
-                animateValueChange(
-                    circleValues[index],
-                    parseFloat(data[key].value),
-                    parseFloat(data[key].hoverValue),
-                    data[key].hoverValue.replace(/\d/g, ''),
-                    200
-                );
-            });
-    
-            // Handle touch end
-            circle.addEventListener('touchend', () => {
-                circleTexts[index].textContent = data[key].text;
-                animateValueChange(
-                    circleValues[index],
-                    parseFloat(data[key].hoverValue),
-                    parseFloat(data[key].value),
-                    data[key].value.replace(/\d/g, ''),
-                    200
-                );
-            });
-        });
-
         }
 
         // Update Welcome Text Based on Mode
         function updateWelcomeText(mode) {
-            const texts = {
-                hiragana: { text: 'こんにちは', font: 'Noto Sans JP' },
-                kanji: { text: '今日は', font: 'Noto Sans JP' },
-                english: { text: 'Hello', font: 'Inter' }
-            };
-            welcomeText.textContent = texts[mode].text;
-            welcomeText.style.fontFamily = texts[mode].font;
+            const textData = welcomeTexts[mode];
+            welcomeText.textContent = textData.text;
+            welcomeText.style.fontFamily = textData.font;
         }
 
         // Update Menu Text Based on Mode
         function updateMenuText(mode) {
-            const menuItems = {
-                hiragana: { welcome: 'こんにちは 👋', geometry: 'きかがく 📐', physics: 'ぶつりがく 🧪' },
-                kanji: { welcome: '今日は 👋', geometry: '幾何学 📐', physics: '物理学 🧪' },
-                english: { welcome: 'Hello 👋', geometry: 'Geometry 📐', physics: 'Physics 🧪' }
-            };
-
-            welcomeLink.textContent = menuItems[mode].welcome;
-            geometryLink.textContent = menuItems[mode].geometry;
-            physicsLink.textContent = menuItems[mode].physics;
+            const items = menuItems[mode];
+            welcomeLink.textContent = items.welcome;
+            geometryLink.textContent = items.geometry;
+            physicsLink.textContent = items.physics;
         }
+
+        // Animate Value Change for Circle Values
+        function animateValueChange(element, start, end, unit, duration) {
+            const frameRate = 20;
+            const totalFrames = duration / frameRate;
+            const increment = (end - start) / totalFrames;
+            let current = start;
+            let frame = 0;
+
+            const interval = setInterval(() => {
+                current += increment;
+                frame++;
+                element.textContent = `${Math.round(current)}${unit}`;
+
+                if (frame >= totalFrames) clearInterval(interval);
+            }, frameRate);
+        }
+
+        // Reset Transform on Touch End for Buttons
+        function resetTransformOnTouchEnd(button, delay = 300) {
+            button.addEventListener('touchend', () => {
+                setTimeout(() => { button.style.transform = ''; }, delay);
+            });
+        }
+
+        // Show Specific Section
+        function showSection(sectionId) {
+            sections.forEach(section => {
+                section.style.display = section.id === sectionId ? 'block' : 'none';
+            });
+        }
+
+        // ---------------------------------
+        // Event Handlers and Initialization
+        // ---------------------------------
 
         // Handle Mode Change
         buttonRight.addEventListener('click', () => {
@@ -421,25 +455,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Reset Transform on Touch End for Buttons
-        function resetTransformOnTouchEnd(button, delay = 300) {
-            button.addEventListener('touchend', () => {
-                setTimeout(() => { button.style.transform = ''; }, delay);
-            });
-        }
-
         [buttonRight, buttonLeft].forEach(button => resetTransformOnTouchEnd(button));
 
         // Toggle Menu Visibility
         buttonLeft.addEventListener('click', () => {
             menuContainer.style.display = menuContainer.style.display === 'flex' ? 'none' : 'flex';
         });
-
-        // Show Specific Section
-        function showSection(sectionId) {
-            sections.forEach(section => {
-                section.style.display = section.id === sectionId ? 'block' : 'none';
-            });
-        }
 
         // Handle Menu Navigation
         links.forEach(link => {
@@ -471,31 +492,19 @@ document.addEventListener('DOMContentLoaded', () => {
         updateMenuText(currentMode);
         updateCircleTexts();
 
-        // Handle Unit Toggle
-        switchButton.addEventListener('click', () => {
-            isKilo = !isKilo;
-            updateCircleTexts();
+        // Setup touch events for letter-spacing transition on the welcome section heading
+        const welcomeHeading = document.querySelector("#welcome-section h1");
 
-            // Toggle button symbol
-            switchButton.textContent = switchButton.textContent === "○" ? "◌" : "○";
-            thirdCircle.classList.toggle('dashed-border');
+        // Handle touch start
+        welcomeHeading.addEventListener("touchstart", function() {
+            welcomeHeading.style.letterSpacing = "0.15rem";
         });
 
-        // Animate Value Change for Circle Values
-        function animateValueChange(element, start, end, unit, duration) {
-            const frameRate = 20;
-            const totalFrames = duration / frameRate;
-            const increment = (end - start) / totalFrames;
-            let current = start;
-            let frame = 0;
-
-            const interval = setInterval(() => {
-                current += increment;
-                frame++;
-                element.textContent = `${Math.round(current)}${unit}`;
-
-                if (frame >= totalFrames) clearInterval(interval);
-            }, frameRate);
-        }
+        // Handle touch end
+        welcomeHeading.addEventListener("touchend", function() {
+            setTimeout(function() {
+                welcomeHeading.style.letterSpacing = "0";
+            }, 300); // Match the CSS transition duration
+        });
     });
 });

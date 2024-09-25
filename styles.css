@@ -13,11 +13,13 @@ body, html {
     margin: 0;
     padding: 0;
     height: 100%;
+    white-space: nowrap;
     background-color: var(--color-dark);
     overflow: hidden;
+    /* Vendor prefixes for user-select */
     -webkit-user-select: none;  /* Safari */
     -moz-user-select: none;     /* Firefox */
-    -ms-user-select: none;      /* Internet Explorer/Edge */
+    -ms-user-select: none;      /* IE10+ */
     user-select: none;          /* Standard */
 }
 
@@ -90,7 +92,7 @@ body, html {
 }
 
 .button-theme {
-    margin-left: 16vw;
+    margin-left: 16.5vw;
     width: 1rem;
     height: 1rem;
     background: var(--button-bg);
@@ -103,7 +105,7 @@ body, html {
 }
 
 .github {
-    margin-right: 16vw;
+    margin-right: 16.5vw;
     color: var(--color-light);
     text-decoration: none;
     font-family: var(--font-main);
@@ -172,7 +174,7 @@ body, html {
 canvas {
     width: 23vw;
     height: 23vw;
-    margin: -1.12vw;
+    margin: -1.15vw;
 }
 
 #physics-section {
@@ -233,6 +235,7 @@ canvas {
     opacity: 1;
 }
 
+/* Specific transition for the second circle */
 #circle-container .circle:nth-child(2):before {
     transition: transform 3s ease;
 }
@@ -241,32 +244,14 @@ canvas {
     transition: transform 0.1s ease;
 }
 
-#third-circle:before {
+/* Dashed Border for Third Circle */
+#circle-container .circle:nth-child(3):before {
+    border: 1.5px dashed var(--color-light);
     transition: transform 0.3s steps(3);
 }
 
-#third-circle:hover:before, #third-circle:active:before {
+#circle-container .circle:nth-child(3):hover:before {
     transform: scale(0.5);
-}
-
-.dashed-border:before {
-    border: 1.5px dashed !important;
-}
-
-#switch-button {
-    margin-top: 2rem;
-    margin-left: 42.5vw;
-    color: var(--color-light);
-    cursor: pointer;
-    text-align: center;
-    transition: transform var(--transition-ease);
-    line-height: 1;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-#switch-button:active {
-    transform: translateY(10px);
 }
 
 @media (max-width: 768px) {
@@ -287,16 +272,8 @@ canvas {
         transform: rotate(35deg);
     }
 
-    .button-theme {
-        margin-left: 4vw;
-    }
-
-    .github {
-        margin-right: 4vw;
-    }
-
     #geometry-section {
-        margin-top: 3vh;
+        white-space: wrap;
     }
 
     #canvas1, #canvas2, #canvas3 {
@@ -309,10 +286,6 @@ canvas {
         font-size: 4rem;
     }
 
-    #physics-section {
-        margin-top: 6vh;
-    }
-
     #circle-container {
         flex-direction: row;
         justify-content: center;
@@ -321,7 +294,6 @@ canvas {
     }
 
     .circle {
-        top: 2rem;
         width: 35vw;
         height: 35vw;
     }
@@ -338,21 +310,12 @@ canvas {
     .circle-text {
         font-size: 0.7rem;
     }
-
-    #switch-button {
-        margin-top: 3.3rem;
-        margin-left: 0;
-    }
-
-    #third-circle {
-        display: flex;
-        justify-content: center;
-    }
 }
 
 @media (hover: none) {
-    .circle:hover, .circle:active, #third-circle:hover, #third-circle:active, .dashed-border:before, .dashed-border:hover, .dashed-border:active {
-        pointer-events: none;
+    /* Disable hover effects on touch devices */
+    .circle:hover:before, .circle:active:before {
+        transform: none;
     }
 }
 

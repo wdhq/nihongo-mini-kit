@@ -1,55 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta and Title -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本語サバイバルキット</title>
 
-    <!-- Preload fonts -->
+    <!-- Preload Fonts -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" as="style">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" as="style">
 
-    <!-- Load fonts -->
+    <!-- Load Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <!-- Link to CSS -->
     <link rel="stylesheet" href="styles.css">
-
-    <title>日本語サバイバルキット</title>
 </head>
 <body>
     <div class="outer-wrapper">
         <div class="container">
+            <!-- Welcome Section -->
             <div id="welcome-section" class="page-section">
                 <h1 id="welcome-text"></h1>
             </div>
 
+            <!-- Geometry Section -->
             <div id="geometry-section" class="page-section">
                 <canvas id="canvas1"></canvas>
                 <canvas id="canvas2"></canvas>
                 <canvas id="canvas3"></canvas>
             </div>
+
+            <!-- Physics Section -->
             <div id="physics-section" class="page-section">
                 <div id="circle-container">
                     <div class="circle">
-                        <span class="circle-value">35ど</span>
-                        <span class="circle-text">あつい</span>
+                        <span class="circle-value"></span>
+                        <span class="circle-text"></span>
                     </div>
                     <div class="circle">
-                        <span class="circle-value">2キロメートル</span>
-                        <span class="circle-text">おそい</span>
+                        <span class="circle-value"></span>
+                        <span class="circle-text"></span>
                     </div>
-                    <div class="circle" id="third-circle">
-                        <span class="circle-value" id="circle3-value">200センチ</span>
-                        <span class="circle-text" id="circle3-text">おっきい</span>
+                    <!-- Third Circle with Dashed Border by Default -->
+                    <div class="circle">
+                        <span class="circle-value"></span>
+                        <span class="circle-text"></span>
                     </div>
                 </div>
-                <div id="switch-button" class="button">○</div>
             </div>                                           
         </div>
     </div>
 
+    <!-- Menu Container -->
     <div class="menu-container">
         <ul class="menu">
             <li><a href="#" id="welcome-link"></a></li>
@@ -58,6 +65,7 @@
         </ul>
     </div>
 
+    <!-- Buttons Container -->
     <div class="buttons-container">
         <a href="https://github.com/wdhq/nihongo-survival-kit" target="_blank" rel="noopener noreferrer" class="github"><i class="fab fa-github"></i></a>
         <div class="button button-left">☰</div>
@@ -65,11 +73,12 @@
         <div class="button button-theme"></div>
     </div>
 
-
-    <!-- Include JS -->
+    <!-- Include JS Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+
+    <!-- Include Custom JS -->
     <script src="script.js"></script>
 </body>
 </html>
