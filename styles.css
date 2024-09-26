@@ -275,6 +275,10 @@ body, html {
         transform: rotate(0deg);
     }
 
+    #geometry-section {
+        white-space: wrap;
+    }
+
     #geometry-section canvas {
         width: calc((100vw / 2) - (var(--margin-w) * 1.4));
         height: calc((100vw / 2) - (var(--margin-w) * 1.4));
