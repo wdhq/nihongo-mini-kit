@@ -127,10 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const canvas = document.getElementById(canvasId);
             const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
             const scene = new THREE.Scene();
-        
+
             const frustumSize = 1.8; // Adjust this value to zoom in or out
             const aspectRatio = canvas.clientWidth / canvas.clientHeight;
-        
+
             const camera = new THREE.OrthographicCamera(
                 (frustumSize * aspectRatio) / -2,
                 (frustumSize * aspectRatio) / 2,
@@ -139,51 +139,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 -1,
                 3
             );
-        
+
             scenes[index] = scene;
             scene.background = new THREE.Color(colors.dark);
             camera.position.set(1, 0.7, 1);
             camera.lookAt(0, 0, 0);
-        
+
             // Adjust renderer and camera on resize
             function setSize() {
                 const width = canvas.clientWidth;
                 const height = canvas.clientHeight;
                 const pixelRatio = window.devicePixelRatio;
-        
+
                 renderer.setSize(width * pixelRatio, height * pixelRatio, false);
                 renderer.setPixelRatio(pixelRatio);
-        
+
                 const aspectRatio = width / height;
-        
+
                 camera.left = (-frustumSize * aspectRatio) / 2;
                 camera.right = (frustumSize * aspectRatio) / 2;
                 camera.top = frustumSize / 2;
                 camera.bottom = -frustumSize / 2;
-        
+
                 camera.updateProjectionMatrix();
             }
-        
+
             // Call setSize initially
             setSize();
-        
+
             // Add event listener for window resize
             window.addEventListener('resize', setSize, false);
 
-            setSize();
-            window.addEventListener("resize", setSize);
+            // Initialize Three.js variables for edge thickness adjustment
+            let edgeThickness = window.innerWidth <= 768 ? 0.006 : 0.003;
 
-            // Create thicker edges
+            // Create thick edges based on edgeThickness
             function createThickEdges(object) {
                 const edgesGeometry = new THREE.EdgesGeometry(object.geometry);
                 const thickEdgesGroup = new THREE.Group();
-                const edgeThickness = 0.003;
 
                 for (let i = 0; i < edgesGeometry.attributes.position.count; i += 2) {
                     const start = new THREE.Vector3().fromBufferAttribute(edgesGeometry.attributes.position, i);
                     const end = new THREE.Vector3().fromBufferAttribute(edgesGeometry.attributes.position, i + 1);
-                    const edgeVector = new THREE.Vector3().subVectors(end, start);
-                    const edgeLength = edgeVector.length();
+                    const edgeLength = new THREE.Vector3().subVectors(end, start).length();
 
                     const cylinder = new THREE.Mesh(
                         new THREE.CylinderGeometry(edgeThickness, edgeThickness, edgeLength, 8),
@@ -194,9 +192,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     cylinder.rotateX(Math.PI / 2);
                     thickEdgesGroup.add(cylinder);
                 }
-
                 return thickEdgesGroup;
             }
+
+            // Function to update edge thickness only if screen size changes
+            function updateEdgeThickness() {
+                const newThickness = window.innerWidth <= 768 ? 0.006 : 0.003;
+                if (newThickness === edgeThickness) return; // No need to update if thickness is the same
+
+                edgeThickness = newThickness;
+
+                // Update the edges for each mesh
+                edgeGroups.forEach((group, index) => {
+                    scenes[index].remove(group);  // Remove existing edges
+                    const newEdges = createThickEdges(meshes[index]);
+                    scenes[index].add(newEdges);  // Add new edges with updated thickness
+                    edgeGroups[index] = newEdges;
+                });
+            }
+
+            // Listen to window resize to adjust edge thickness dynamically
+            window.addEventListener('resize', updateEdgeThickness);
+
+            // Call the update function on load to set initial edge thickness
+            updateEdgeThickness();
 
             // Load 3D Object
             const objLoader = new THREE.OBJLoader();
@@ -211,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         const edges = createThickEdges(child);
                         scene.add(edges);
-                        edgeGroups[index].push(edges);
+                        edgeGroups[index] = edges; // Store edges for future updates
                     }
                 });
                 scene.add(object);
