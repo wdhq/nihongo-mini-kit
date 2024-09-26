@@ -11,18 +11,127 @@
 }
 
 body, html {
-    font-family: var(--font-main);
-    margin-top: var(--margin-h);
-    margin-left: var(--margin-w);
-    margin-right: var(--margin-w);
+    margin: var(--margin-h) var(--margin-w) 0 var(--margin-w);
     padding: 0;
     background-color: var(--color-dark);
-    overflow: hidden;
     white-space: nowrap;
+    font-family: var(--font-main);
     -webkit-user-select: none;  /* Safari */
     -moz-user-select: none;     /* Firefox */
     -ms-user-select: none;      /* IE10+ */
     user-select: none;          /* Standard */
+}
+
+.buttons-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.github {
+    margin-left: var(--margin-w);
+    z-index: 2;
+    color: var(--color-light);
+    font-family: var(--font-main);
+    font-size: 1.25rem;
+    text-decoration: none;
+}
+
+.button-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--button-size);
+    height: var(--button-size);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    z-index: 2;
+    transition: transform var(--transition-ease);
+}
+
+.button-left {
+    border: 1px solid var(--color-light);
+    background: none;
+    color: var(--color-light);
+    font-size: 1.2rem;
+}
+
+.button-left:hover {
+    transform: rotate(-10deg);
+}
+
+.button-left:active {
+    transform: rotate(-35deg);
+}
+
+.button-right {
+    border: none;
+    background: var(--color-light);
+    color: var(--color-dark);
+    font-size: 1rem;
+}
+
+.button-right:hover {
+    transform: rotate(10deg);
+}
+
+.button-right:active {
+    transform: rotate(35deg);
+}
+
+.button-theme {
+    width: 1rem;
+    height: 1rem;
+    margin-right: var(--margin-w);
+    background: var(--button-bg);
+    border-radius: 50%;
+    transition: transform var(--transition-ease);
+}
+
+.button-theme:active {
+    transform: scale(0.8);
+}
+
+.menu-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-dark);
+}
+
+.menu {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 400;
+}
+
+.menu li {
+    margin: 1.4rem 0;
+}
+
+.menu li a {
+    margin: 1.4rem;
+    color: var(--color-light);
+    text-decoration: none;
+}
+
+.menu li a:hover {
+    text-decoration: underline;
 }
 
 .wrapper {
@@ -40,121 +149,12 @@ body, html {
     to { opacity: 1; }
 }
 
-.buttons-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    height: calc(var(--margin-h) * 2);
-}
-
-.button-group {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.button {
-    width: var(--button-size);
-    height: var(--button-size);
-    border-radius: var(--border-radius);
+.container {
+    height: 50vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    z-index: 2;
-    transition: transform var(--transition-ease);
-}
-
-.button-left, .button-right {
-    border: 1px solid var(--color-light);
-}
-
-.button-left {
-    background: none;
-    color: var(--color-light);
-    font-size: 1.2rem;
-}
-
-.button-left:hover {
-    transform: rotate(-10deg);
-}
-
-.button-left:active {
-    transform: rotate(-35deg);
-}
-
-.button-right {
-    background: var(--color-light);
-    color: var(--color-dark);
-    font-size: 1rem;
-    border: none;
-}
-
-.button-right:hover {
-    transform: rotate(10deg);
-}
-
-.button-right:active {
-    transform: rotate(35deg);
-}
-
-.button-theme {
-    margin-right: var(--margin-w);
-    width: 1rem;
-    height: 1rem;
-    background: var(--button-bg);
-    border-radius: 50%;
-    transition: transform var(--transition-ease);
-}
-
-.button-theme:active {
-    transform: scale(0.8);
-}
-
-.github {
-    margin-left: var(--margin-w);
-    color: var(--color-light);
-    text-decoration: none;
-    font-family: var(--font-main);
-    font-size: 1.25rem;
-    z-index: 2;
-}
-
-.menu-container {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    background-color: var(--color-dark);
-    background-color: var(--color-dark);
-}
-
-.menu {
-    list-style-type: none;
-    padding: 0;
     text-align: center;
-    font-size: 1.4rem;
-    font-weight: 400;
-}
-
-.menu li {
-    margin: 1.4rem 0;
-}
-
-.menu li a {
-    color: var(--color-light);
-    text-decoration: none;
-    margin: 1.4rem;
-}
-
-.menu li a:hover {
-    text-decoration: underline;
 }
 
 .page-section {
@@ -172,21 +172,13 @@ body, html {
     align-items: center;
     font-size: 6rem;
     font-weight: 500;
+    letter-spacing: 0;
     cursor: default;
     transition: letter-spacing var(--transition-ease);
-    letter-spacing: 0;
 }
 
 #welcome-section h1:hover {
     letter-spacing: 0.15rem;
-}
-
-.container {
-    height: 50vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
 }
 
 #geometry-section canvas {
@@ -206,9 +198,9 @@ body, html {
     width: calc((100vw / 3) - (var(--margin-w) * 2));
     height: calc((100vw / 3) - (var(--margin-w) * 2));
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     cursor: pointer;
 }
 
@@ -225,11 +217,13 @@ body, html {
     z-index: -1;
 }
 
-.circle:hover:before, .circle:active:before {
+.circle:hover:before,
+.circle:active:before {
     transform: scale(0.5);
 }
 
-.circle:hover, .circle:active {
+.circle:hover,
+.circle:active {
     color: var(--color-light);
 }
 
@@ -242,8 +236,8 @@ body, html {
 
 .circle-text {
     font-size: 1.2rem;
-    transition: opacity 0.3s ease;
     opacity: 1;
+    transition: opacity 0.3s ease;
 }
 
 /* Specific transition for the second circle */
@@ -276,20 +270,9 @@ body, html {
         width: calc(100vw - (var(--margin-w) * 2));
     }
 
-    .button-left:hover, .button-right:hover {
+    .button-left:hover,
+    .button-right:hover {
         transform: rotate(0deg);
-    }
-    
-    .button-left:active {
-        transform: rotate(-35deg);
-    }
-    
-    .button-right:active {
-        transform: rotate(35deg);
-    }
-
-    #geometry-section {
-        white-space: wrap;
     }
 
     #geometry-section canvas {
@@ -329,7 +312,10 @@ body, html {
 
 @media (hover: none) {
     /* Disable hover effects on touch devices */
-    .circle:hover, .circle:active, .circle:hover:before, .circle:active:before {
+    .circle:hover,
+    .circle:active,
+    .circle:hover:before,
+    .circle:active:before {
         pointer-events: none;
     }
 }
