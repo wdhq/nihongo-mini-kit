@@ -1,4 +1,4 @@
-# Nihongo Survival Kit
+# Nihongo Mini Kit
 
 > [!Important]
 > The current stable version includes the geometry and physics sections.
@@ -8,7 +8,7 @@
 
 ## About
 
-日本語サバイバルキット is a minimalist, interactive design covering basic Japanese vocabulary. More learning resources are ahead.
+日本のミニキット is a minimalist, interactive design covering basic Japanese vocabulary. More learning resources are ahead.
 
 ## Troubleshooting
 
