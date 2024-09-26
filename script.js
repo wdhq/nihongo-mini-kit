@@ -127,27 +127,48 @@ document.addEventListener('DOMContentLoaded', () => {
             const canvas = document.getElementById(canvasId);
             const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
             const scene = new THREE.Scene();
-            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -1, 3);
-
+        
+            const frustumSize = 1.8; // Adjust this value to zoom in or out
+            const aspectRatio = canvas.clientWidth / canvas.clientHeight;
+        
+            const camera = new THREE.OrthographicCamera(
+                (frustumSize * aspectRatio) / -2,
+                (frustumSize * aspectRatio) / 2,
+                frustumSize / 2,
+                frustumSize / -2,
+                -1,
+                3
+            );
+        
             scenes[index] = scene;
             scene.background = new THREE.Color(colors.dark);
             camera.position.set(1, 0.7, 1);
             camera.lookAt(0, 0, 0);
-
+        
             // Adjust renderer and camera on resize
             function setSize() {
                 const width = canvas.clientWidth;
                 const height = canvas.clientHeight;
                 const pixelRatio = window.devicePixelRatio;
-
+        
                 renderer.setSize(width * pixelRatio, height * pixelRatio, false);
                 renderer.setPixelRatio(pixelRatio);
-
+        
                 const aspectRatio = width / height;
-                camera.left = -aspectRatio;
-                camera.right = aspectRatio;
+        
+                camera.left = (-frustumSize * aspectRatio) / 2;
+                camera.right = (frustumSize * aspectRatio) / 2;
+                camera.top = frustumSize / 2;
+                camera.bottom = -frustumSize / 2;
+        
                 camera.updateProjectionMatrix();
             }
+        
+            // Call setSize initially
+            setSize();
+        
+            // Add event listener for window resize
+            window.addEventListener('resize', setSize, false);
 
             setSize();
             window.addEventListener("resize", setSize);

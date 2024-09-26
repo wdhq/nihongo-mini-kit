@@ -5,22 +5,34 @@
     --border-radius: 0.3rem;
     --transition-ease: 0.3s ease;
     --button-size: 2.5rem;
+    --margin-h: 6vh;
+    --margin-w: 8vw;
     --font-main: 'Inter', 'Noto Sans JP', sans-serif;
 }
 
 body, html {
     font-family: var(--font-main);
-    margin: 0;
+    margin-top: var(--margin-h);
+    margin-left: var(--margin-w);
+    margin-right: var(--margin-w);
     padding: 0;
-    height: 100%;
-    white-space: nowrap;
     background-color: var(--color-dark);
     overflow: hidden;
-    /* Vendor prefixes for user-select */
+    white-space: nowrap;
     -webkit-user-select: none;  /* Safari */
     -moz-user-select: none;     /* Firefox */
     -ms-user-select: none;      /* IE10+ */
     user-select: none;          /* Standard */
+}
+
+.wrapper {
+    position: fixed;
+    top: 25vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
 }
 
 @keyframes fadeIn {
@@ -28,23 +40,18 @@ body, html {
     to { opacity: 1; }
 }
 
-.outer-wrapper {
+.buttons-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100%;
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
+    justify-content: space-between;
+    width: 100%;
+    height: calc(var(--margin-h) * 2);
 }
 
-.buttons-container {
-    position: absolute;
-    top: 13%;
-    left: 50%;
-    transform: translateX(-50%);
+.button-group {
     display: flex;
-    gap: 1.25rem;
     align-items: center;
+    gap: 1rem;
 }
 
 .button {
@@ -55,6 +62,7 @@ body, html {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    z-index: 2;
     transition: transform var(--transition-ease);
 }
 
@@ -92,7 +100,7 @@ body, html {
 }
 
 .button-theme {
-    margin-left: 16.5vw;
+    margin-right: var(--margin-w);
     width: 1rem;
     height: 1rem;
     background: var(--button-bg);
@@ -105,11 +113,12 @@ body, html {
 }
 
 .github {
-    margin-right: 16.5vw;
+    margin-left: var(--margin-w);
     color: var(--color-light);
     text-decoration: none;
     font-family: var(--font-main);
     font-size: 1.25rem;
+    z-index: 2;
 }
 
 .menu-container {
@@ -117,17 +126,18 @@ body, html {
     justify-content: center;
     align-items: center;
     position: fixed;
+    height: 100vh;
+    width: 100vw;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    z-index: 1;
+    background-color: var(--color-dark);
     background-color: var(--color-dark);
 }
 
 .menu {
     list-style-type: none;
     padding: 0;
-    margin: 0 0 5vh 0;
     text-align: center;
     font-size: 1.4rem;
     font-weight: 400;
@@ -148,6 +158,7 @@ body, html {
 }
 
 .page-section {
+    width: calc(100vw - (var(--margin-w) * 4));
     display: none;
     text-align: center;
     color: var(--color-light);
@@ -156,6 +167,9 @@ body, html {
 }
 
 #welcome-section h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 6rem;
     font-weight: 500;
     cursor: default;
@@ -168,36 +182,33 @@ body, html {
 }
 
 .container {
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
 
-canvas {
-    width: 23vw;
-    height: 23vw;
-    margin: -1.125vw;
-}
-
-#physics-section {
-    margin-top: 6vh;
+#geometry-section canvas {
+    width: calc((100vw / 3) - (var(--margin-w) * 1.4));
+    height: calc((100vw / 3) - (var(--margin-w) * 1.4));
 }
 
 #circle-container {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
-    gap: 4.5vw;
 }
 
 .circle {
     position: relative;
-    width: 16.5vw;
-    height: 16.5vw;
+    width: calc((100vw / 3) - (var(--margin-w) * 2));
+    height: calc((100vw / 3) - (var(--margin-w) * 2));
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    font-size: 1.4rem;
     cursor: pointer;
 }
 
@@ -244,7 +255,7 @@ canvas {
     transition: transform 0.1s ease;
 }
 
-/* Dashed Border for Third Circle */
+/* Specific transition for the third circle */
 #circle-container .circle:nth-child(3):before {
     border: 1.5px dashed var(--color-light);
     transition: transform 0.3s steps(3);
@@ -255,9 +266,14 @@ canvas {
 }
 
 @media (max-width: 768px) {
-    .outer-wrapper {
-        height: 100vh;
-        width: 100vw;
+    body, html {
+        margin-top: calc(var(--margin-h) / 2);
+        margin-left: calc(var(--margin-w) / 2);
+        margin-right: calc(var(--margin-w) / 2);
+    }
+
+    .page-section {
+        width: calc(100vw - (var(--margin-w) * 2));
     }
 
     .button-left:hover, .button-right:hover {
@@ -276,10 +292,9 @@ canvas {
         white-space: wrap;
     }
 
-    #canvas1, #canvas2, #canvas3 {
-        width: 45vw;
-        height: 45vw;
-        display: inline-block;
+    #geometry-section canvas {
+        width: calc((100vw / 2) - (var(--margin-w) * 1.4));
+        height: calc((100vw / 2) - (var(--margin-w) * 1.4));
     }
 
     #welcome-section h1 {
@@ -290,12 +305,12 @@ canvas {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        gap: 13vw;
+        gap: var(--margin-w);
     }
 
     .circle {
-        width: 35vw;
-        height: 35vw;
+        width: calc((100vw / 2) - (var(--margin-w) * 2));
+        height: calc((100vw / 2) - (var(--margin-w) * 2));
     }
     
     .circle:before {
@@ -303,7 +318,7 @@ canvas {
     }
 
     .circle-value {
-        top: -2rem;
+        top: -4vh;
         font-size: 0.7rem;
     }
 
