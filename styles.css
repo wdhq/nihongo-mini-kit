@@ -245,7 +245,6 @@ body, html {
 
 /* Specific transition for the third circle */
 #circle-container .circle:nth-child(3):before {
-    border: 1.6px dashed var(--color-light);
     transition: width 0.3s steps(3), height 0.3s steps(3);
 }
 
