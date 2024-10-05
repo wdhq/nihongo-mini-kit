@@ -224,12 +224,12 @@ body, html {
 .circle-value {
     position: absolute;
     top: -4rem;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     transition: width 0.4s ease, height 0.4s ease;
 }
 
 .circle-text {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     opacity: 1;
     transition: opacity 0.3s ease;
 }
@@ -245,7 +245,7 @@ body, html {
 
 /* Specific transition for the third circle */
 #circle-container .circle:nth-child(3):before {
-    transition: width 0.3s steps(3), height 0.3s steps(3);
+    transition: width 0.8s ease-in-out, height 0.8s ease-in-out;
 }
 
 #circle-container .circle:nth-child(3):hover:before {
